@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат — Indie-Демо</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Indie<span>Демо</span></div>
+            <div class="header-links">
+                {% if session.user_id %}
+                    <a href="{{ url_for('upload_game') }}" class="upload-link">➕ Загрузить игру</a>
+                    {% if session.user_id == 1 %}
+                        <a href="{{ url_for('admin_panel') }}" class="admin-link">⚙️ Админка</a>
+                    {% endif %}
+                    <span class="username">Привет, {{ session.username }}!</span>
+                    <a href="{{ url_for('logout') }}" class="logout">Выйти</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="login">Вход</a>
+                    <a href="{{ url_for('register') }}" class="register">Регистрация</a>
+                {% endif %}
+            </div>
+        </header>
+
+        <a href="{{ url_for('index') }}" class="back-link-chat">← На главную</a>
+        <h1 style="margin-bottom: 16px;">💬 Общий чат</h1>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="messages-container">
+                {% if messages %}
+                    {% for msg in messages %}
+                        <div class="message" data-id="{{ msg.id }}">
+                            <span class="username">{{ msg.user.username }}</span>
+                            <span class="text">{{ msg.text }}</span>
+                            <span class="time">{{ msg.created_at.strftime('%H:%M') }}</span>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="chat-empty">Пока нет сообщений. Будь первым!</div>
+                {% endif %}
+            </div>
+
+            <form class="chat-form" id="chat-form">
+                <input type="text" id="message-input" placeholder="Напишите сообщение..." required>
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+
+        <footer>
+            Indie-Демо — площадка для инди-разработчиков © 2026
+        </footer>
+    </div>
+
+    <script>
+        // Получаем элементы
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('message-input');
+        const container = document.getElementById('messages-container');
+
+        // Определяем last_id (по последнему сообщению в контейнере)
+        function getLastMessageId() {
+            const lastMessage = container.querySelector('.message:last-child');
+            if (lastMessage) {
+                return parseInt(lastMessage.dataset.id);
+            }
+            return 0;
+        }
+
+        // Отправка сообщения
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = input.value.trim();
+            if (!text) return;
+
+            const formData = new FormData();
+            formData.append('text', text);
+
+            try {
+                const response = await fetch('/send_message', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    input.value = '';
+                    // После отправки — сразу запрашиваем новые сообщения
+                    await fetchNewMessages();
+                } else {
+                    const error = await response.json();
+                    alert('Ошибка: ' + (error.error || 'Неизвестная ошибка'));
+                }
+            } catch (error) {
+                console.error('Ошибка отправки:', error);
+            }
+        });
+
+        // Получение новых сообщений
+        async function fetchNewMessages() {
+            const lastId = getLastMessageId();
+            try {
+                const response = await fetch('/get_messages?last_id=' + lastId);
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // Если пользователь вышел из сессии — ничего не делаем
+                        return;
+                    }
+                    console.error('Ошибка получения сообщений');
+                    return;
+                }
+                const data = await response.json();
+                const messages = data.messages || [];
+
+                // Удаляем заглушку "Пока нет сообщений"
+                const empty = container.querySelector('.chat-empty');
+                if (empty && messages.length > 0) {
+                    empty.remove();
+                }
+
+                // Добавляем новые сообщения
+                for (const msg of messages) {
+                    const div = document.createElement('div');
+                    div.className = 'message';
+                    div.dataset.id = msg.id;
+                    div.innerHTML = `
+                        <span class="username">${msg.username}</span>
+                        <span class="text">${msg.text}</span>
+                        <span class="time">${msg.created_at}</span>
+                    `;
+                    container.appendChild(div);
+                }
+
+                // Прокручиваем вниз
+                container.scrollTop = container.scrollHeight;
+
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+
+        // Автоподгрузка каждые 5 секунд
+        setInterval(fetchNewMessages, 5000);
+
+        // При загрузке страницы — прокручиваем вниз
+        container.scrollTop = container.scrollHeight;
+    </script>
+</body>
+</html>

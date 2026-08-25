@@ -1,0 +1,851 @@
+/* ===== ОБЩИЕ СТИЛИ ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ===== ШАПКА ===== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #30363d;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #58a6ff;
+}
+
+.logo span {
+    color: #f0883e;
+}
+
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.header-links a {
+    color: #e6edf3;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+.header-links .login {
+    border: 1px solid #30363d;
+}
+
+.header-links .login:hover {
+    background: #30363d;
+}
+
+.header-links .register {
+    background: #238636;
+}
+
+.header-links .register:hover {
+    background: #2ea043;
+}
+
+.header-links .logout {
+    background: #da3633;
+}
+
+.header-links .logout:hover {
+    background: #f85149;
+}
+
+.header-links .upload-link {
+    color: #58a6ff;
+    font-weight: 500;
+}
+
+.header-links .admin-link {
+    color: #f0883e;
+    font-weight: 500;
+}
+
+.header-links .username {
+    color: #8b949e;
+}
+
+/* ===== КНОПКИ ===== */
+.btn {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.btn-approve {
+    background: #238636;
+    color: white;
+}
+
+.btn-approve:hover {
+    background: #2ea043;
+}
+
+.btn-delete {
+    background: #da3633;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #f85149;
+}
+
+.btn-small {
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+/* ===== ГЛАВНАЯ СТРАНИЦА (КАРТОЧКИ ИГР) ===== */
+.page-title {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    color: #8b949e;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.game-card {
+    background: #161b22;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #30363d;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.game-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border-color: #58a6ff;
+}
+
+.game-card .placeholder-img {
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(135deg, #1f2937, #374151);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b949e;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.game-card h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #f0f6fc;
+}
+
+.game-card .genre {
+    display: inline-block;
+    background: #1f2937;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #58a6ff;
+    margin-bottom: 10px;
+}
+
+.game-card .description {
+    color: #8b949e;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+}
+
+.game-card .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #8b949e;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.game-card .downloads {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.game-card .btn-demo {
+    background: #238636;
+    color: white;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.game-card .btn-demo:hover {
+    background: #2ea043;
+}
+
+/* ===== ПУСТОЕ СОСТОЯНИЕ ===== */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.empty-state h2 {
+    font-size: 32px;
+    margin-bottom: 16px;
+    color: #8b949e;
+}
+
+.empty-state p {
+    color: #8b949e;
+    font-size: 18px;
+}
+
+/* ===== ФОРМЫ (LOGIN, REGISTER, UPLOAD) ===== */
+.auth-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 420px;
+    width: 100%;
+    margin: 40px auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.auth-card .subtitle {
+    text-align: center;
+    color: #8b949e;
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #e6edf3;
+}
+
+.form-group label .required {
+    color: #f85149;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    color: #e6edf3;
+    font-size: 15px;
+    transition: border 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #58a6ff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group .hint {
+    color: #8b949e;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #238636;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 6px;
+}
+
+.btn-submit:hover {
+    background: #2ea043;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #8b949e;
+}
+
+.auth-footer a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ===== ФАЙЛ-АПЛОАД ===== */
+.file-upload-wrapper {
+    border: 2px dashed #30363d;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.file-upload-wrapper:hover {
+    border-color: #58a6ff;
+}
+
+.file-upload-wrapper input[type="file"] {
+    display: none;
+}
+
+.file-upload-label {
+    display: inline-block;
+    padding: 10px 24px;
+    background: #238636;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.file-upload-label:hover {
+    background: #2ea043;
+}
+
+.file-upload-wrapper .file-name {
+    display: block;
+    margin-top: 12px;
+    color: #8b949e;
+    font-size: 14px;
+}
+
+/* ===== АДМИН-ПАНЕЛЬ (ТАБЛИЦЫ) ===== */
+.section {
+    margin-bottom: 40px;
+}
+
+.section h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #f0f6fc;
+}
+
+.section .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    margin-left: 10px;
+}
+
+.badge.pending {
+    background: #da3633;
+    color: white;
+}
+
+.badge.approved {
+    background: #238636;
+    color: white;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #161b22;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #30363d;
+}
+
+th {
+    background: #1f2937;
+    color: #8b949e;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+td {
+    font-size: 14px;
+}
+
+.empty {
+    text-align: center;
+    color: #8b949e;
+    padding: 30px;
+}
+
+/* ===== FLASH СООБЩЕНИЯ ===== */
+.flash-messages {
+    margin-bottom: 20px;
+}
+
+.flash {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.flash.success {
+    background: #0d4421;
+    border: 1px solid #238636;
+    color: #7ee787;
+}
+
+.flash.warning {
+    background: #44200d;
+    border: 1px solid #da3633;
+    color: #f85149;
+}
+
+.flash.danger {
+    background: #44200d;
+    border: 1px solid #da3633;
+    color: #f85149;
+}
+
+.flash.info {
+    background: #0d2b44;
+    border: 1px solid #58a6ff;
+    color: #58a6ff;
+}
+
+/* ===== ПОДВАЛ ===== */
+footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 40px;
+    border-top: 1px solid #30363d;
+    color: #8b949e;
+    font-size: 14px;
+}
+
+/* ===== АДАПТИВНОСТЬ (МОБИЛЬНЫЕ УСТРОЙСТВА) ===== */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .logo {
+        text-align: center;
+        font-size: 24px;
+    }
+
+    .header-links {
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .header-links a {
+        font-size: 13px;
+        padding: 4px 10px;
+    }
+
+    .page-title {
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .page-subtitle {
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .game-card {
+        padding: 16px;
+    }
+
+    .game-card .placeholder-img {
+        height: 120px;
+    }
+
+    .game-card h3 {
+        font-size: 18px;
+    }
+
+    .meta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+
+    .meta .btn-demo {
+        text-align: center;
+    }
+
+    .auth-card {
+        padding: 24px;
+        margin: 20px auto;
+        max-width: 100%;
+    }
+
+    .auth-card .logo {
+        font-size: 26px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 16px;
+        padding: 12px 14px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 8px 12px;
+    }
+
+    .section h2 {
+        font-size: 20px;
+    }
+
+    .file-upload-wrapper {
+        padding: 20px;
+    }
+
+    footer {
+        font-size: 12px;
+        padding: 20px 0;
+    }
+
+    .empty-state h2 {
+        font-size: 24px;
+    }
+
+    .empty-state p {
+        font-size: 16px;
+    }
+}
+
+/* ===== ЧАТ ===== */
+.chat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #161b22;
+    border-radius: 16px;
+    border: 1px solid #30363d;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.message {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 8px 14px;
+    background: #0d1117;
+    border-radius: 12px;
+    border-left: 3px solid #58a6ff;
+}
+
+.message .username {
+    font-weight: 600;
+    color: #58a6ff;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.message .text {
+    color: #e6edf3;
+    font-size: 15px;
+    word-break: break-word;
+}
+
+.message .time {
+    color: #8b949e;
+    font-size: 12px;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
+.chat-form {
+    padding: 16px 20px;
+    border-top: 1px solid #30363d;
+    display: flex;
+    gap: 12px;
+    background: #0d1117;
+}
+
+.chat-form input {
+    flex: 1;
+    padding: 10px 14px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    color: #e6edf3;
+    font-size: 15px;
+    outline: none;
+}
+
+.chat-form input:focus {
+    border-color: #58a6ff;
+}
+
+.chat-form button {
+    padding: 10px 24px;
+    background: #238636;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.chat-form button:hover {
+    background: #2ea043;
+}
+
+.chat-empty {
+    text-align: center;
+    color: #8b949e;
+    padding: 40px;
+}
+
+.back-link-chat {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+.back-link-chat:hover {
+    text-decoration: underline;
+}
+
+/* ===== АДАПТИВНОСТЬ ДЛЯ ЧАТА ===== */
+@media (max-width: 768px) {
+    .chat-container {
+        height: 500px;
+        border-radius: 12px;
+    }
+
+    .chat-messages {
+        padding: 14px;
+    }
+
+    .message {
+        padding: 6px 12px;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .message .username {
+        font-size: 13px;
+    }
+
+    .message .text {
+        font-size: 14px;
+        order: 3;
+        flex-basis: 100%;
+    }
+
+    .message .time {
+        font-size: 11px;
+    }
+
+    .chat-form {
+        padding: 12px 14px;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .chat-form input {
+        font-size: 16px;
+        padding: 10px 12px;
+        flex: 1 1 100%;
+    }
+
+    .chat-form button {
+        padding: 10px 20px;
+        font-size: 15px;
+        flex: 1;
+    }
+
+    .back-link-chat {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chat-container {
+        height: 450px;
+        border-radius: 8px;
+    }
+
+    .chat-messages {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .message {
+        padding: 6px 10px;
+        gap: 6px;
+        border-left-width: 2px;
+    }
+
+    .message .username {
+        font-size: 12px;
+    }
+
+    .message .text {
+        font-size: 13px;
+    }
+
+    .message .time {
+        font-size: 10px;
+    }
+
+    .chat-form {
+        padding: 10px 12px;
+        gap: 6px;
+    }
+
+    .chat-form input {
+        font-size: 15px;
+        padding: 8px 10px;
+    }
+
+    .chat-form button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .chat-empty {
+        padding: 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 20px;
+    }
+
+    .header-links a {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    .page-title {
+        font-size: 20px;
+    }
+
+    .auth-card {
+        padding: 16px;
+    }
+
+    .game-card .placeholder-img {
+        height: 100px;
+    }
+
+    .game-card h3 {
+        font-size: 16px;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 4px 10px;
+    }
+}
