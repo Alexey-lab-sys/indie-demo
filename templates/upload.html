@@ -1,110 +1,65 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Загрузить игру — Indie-Демо</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <header>
-    <div class="logo">Indie<span>Демо</span></div>
-    <div class="header-links">
-        {% if session.user_id %}
-            <a href="{{ url_for('chat') }}" style="color: #e6edf3; font-weight: 500;">💬 Чат</a>
-            <a href="{{ url_for('upload_game') }}" class="upload-link">➕ Загрузить игру</a>
-            {% if session.user_id == 1 %}
-                <a href="{{ url_for('admin_panel') }}" class="admin-link">⚙️ Админка</a>
-            {% endif %}
-            <span class="username">Привет, {{ session.username }}!</span>
-            <a href="{{ url_for('logout') }}" class="logout">Выйти</a>
-        {% else %}
-            <a href="{{ url_for('login') }}" class="login">Вход</a>
-            <a href="{{ url_for('register') }}" class="register">Регистрация</a>
-        {% endif %}
-    </div>
-        </header>
+{% extends "base.html" %}
 
-        <h1>📤 Загрузить демо-версию</h1>
-        <p class="subtitle">Поделись своей игрой с сообществом. После модерации она появится в каталоге.</p>
+{% block title %}Загрузить игру{% endblock %}
 
-        <!-- Сообщения об ошибках/успехе -->
-        <div class="flash-messages">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="flash {{ category }}">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+{% block content %}
+    <a href="{{ url_for('index') }}" class="back-link">← На главную</a>
+    <h1>📤 Загрузить демо-версию</h1>
+    <p class="subtitle">Поделись своей игрой с сообществом. После модерации она появится в каталоге.</p>
+
+    <form method="POST" enctype="multipart/form-data" style="max-width: 700px; margin: 0 auto;">
+        <div class="form-group">
+            <label>Название игры <span class="required">*</span></label>
+            <input type="text" name="title" placeholder="Например: Космический рейнджер" required>
         </div>
-
-        <form method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Название игры <span class="required">*</span></label>
-                <input type="text" name="title" placeholder="Например: Космический рейнджер" required>
+        <div class="form-group">
+            <label>Описание <span class="required">*</span></label>
+            <textarea name="description" placeholder="Расскажи о своей игре..." required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Жанр</label>
+            <select name="genre">
+                <option value="">Выберите жанр</option>
+                <option value="Приключения">Приключения</option>
+                <option value="RPG">RPG</option>
+                <option value="Симулятор">Симулятор</option>
+                <option value="Стратегия">Стратегия</option>
+                <option value="Платформер">Платформер</option>
+                <option value="Головоломка">Головоломка</option>
+                <option value="Хоррор">Хоррор</option>
+                <option value="Экшен">Экшен</option>
+                <option value="Другое">Другое</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Платформа</label>
+            <select name="platform">
+                <option value="">Выберите платформу</option>
+                <option value="Windows">Windows</option>
+                <option value="Linux">Linux</option>
+                <option value="Mac">Mac</option>
+                <option value="Windows, Linux">Windows, Linux</option>
+                <option value="Windows, Mac">Windows, Mac</option>
+                <option value="Linux, Mac">Linux, Mac</option>
+                <option value="Все платформы">Все платформы</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Демо-файл <span class="required">*</span></label>
+            <div class="file-upload-wrapper">
+                <input type="file" name="demo_file" id="fileInput" required>
+                <label for="fileInput" class="file-upload-label">Выбрать файл</label>
+                <span class="file-name" id="fileName">Файл не выбран</span>
+                <div class="hint">Допустимые форматы: ZIP, RAR, 7z, EXE, MSI, DMG, PKG. Максимум 100 МБ.</div>
             </div>
-
-            <div class="form-group">
-                <label>Описание <span class="required">*</span></label>
-                <textarea name="description" placeholder="Расскажи о своей игре..." required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Жанр</label>
-                <select name="genre">
-                    <option value="">Выберите жанр</option>
-                    <option value="Приключения">Приключения</option>
-                    <option value="RPG">RPG</option>
-                    <option value="Симулятор">Симулятор</option>
-                    <option value="Стратегия">Стратегия</option>
-                    <option value="Платформер">Платформер</option>
-                    <option value="Головоломка">Головоломка</option>
-                    <option value="Хоррор">Хоррор</option>
-                    <option value="Экшен">Экшен</option>
-                    <option value="Другое">Другое</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Платформа</label>
-                <select name="platform">
-                    <option value="">Выберите платформу</option>
-                    <option value="Windows">Windows</option>
-                    <option value="Linux">Linux</option>
-                    <option value="Mac">Mac</option>
-                    <option value="Windows, Linux">Windows, Linux</option>
-                    <option value="Windows, Mac">Windows, Mac</option>
-                    <option value="Linux, Mac">Linux, Mac</option>
-                    <option value="Все платформы">Все платформы</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Демо-файл <span class="required">*</span></label>
-                <div class="file-upload-wrapper">
-                    <input type="file" name="demo_file" id="fileInput" required>
-                    <label for="fileInput" class="file-upload-label">Выбрать файл</label>
-                    <span class="file-name" id="fileName">Файл не выбран</span>
-                    <div class="hint">Допустимые форматы: ZIP, RAR, 7z, EXE, MSI, DMG, PKG. Максимум 100 МБ.</div>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-submit">Загрузить игру</button>
-        </form>
-
-        <footer>
-            Indie-Демо — площадка для инди-разработчиков © 2026
-        </footer>
-    </div>
+        </div>
+        <button type="submit" class="btn-submit">🚀 Загрузить игру</button>
+    </form>
 
     <script>
-        // Отображаем имя выбранного файла
         document.getElementById('fileInput').addEventListener('change', function(e) {
             const fileName = e.target.files[0] ? e.target.files[0].name : 'Файл не выбран';
             document.getElementById('fileName').textContent = fileName;
         });
     </script>
-</body>
-</html>
+{% endblock %}

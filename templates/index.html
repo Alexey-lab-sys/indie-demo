@@ -1,65 +1,46 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indie-Демо — каталог инди-игр</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <header>
-    <div class="logo">Indie<span>Демо</span></div>
-    <div class="header-links">
-        {% if session.user_id %}
-            <a href="{{ url_for('chat') }}" style="color: #e6edf3; font-weight: 500;">💬 Чат</a>
-            <a href="{{ url_for('upload_game') }}" class="upload-link">➕ Загрузить игру</a>
-            {% if session.user_id == 1 %}
-                <a href="{{ url_for('admin_panel') }}" class="admin-link">⚙️ Админка</a>
-            {% endif %}
-            <span class="username">Привет, {{ session.username }}!</span>
-            <a href="{{ url_for('logout') }}" class="logout">Выйти</a>
-        {% else %}
-            <a href="{{ url_for('login') }}" class="login">Вход</a>
-            <a href="{{ url_for('register') }}" class="register">Регистрация</a>
-        {% endif %}
-    </div>
-        </header>
+{% extends "base.html" %}
 
-        <h1 style="font-size: 32px; margin-bottom: 8px;">🎮 Каталог демо-версий</h1>
-        <p style="color: #8b949e; margin-bottom: 20px;">Попробуй инди-игры от независимых разработчиков</p>
+{% block title %}Каталог инди-игр{% endblock %}
 
-        {% if games %}
-            <div class="grid">
-                {% for game in games %}
-                    <div class="game-card">
-                        <div class="placeholder-img">
-                            🎮 {{ game.title[:2] }}
-                        </div>
-                        <h3>{{ game.title }}</h3>
-                        <span class="genre">{{ game.genre or 'Без жанра' }}</span>
-                        <div class="description">
-                            {{ game.description[:120] }}{% if game.description|length > 120 %}...{% endif %}
-                        </div>
-                        <div class="meta">
-                            <span class="downloads">⬇️ {{ game.downloads_count or 0 }}</span>
-                            <span>👤 {{ game.developer.username if game.developer else 'Неизвестен' }}</span>
-                            <a href="{{ url_for('download_game', game_id=game.id) }}" class="btn-demo">Скачать демо</a>
-                        </div>
+{% block content %}
+    <h1 class="page-title">🎮 Каталог демо-версий</h1>
+    <p class="page-subtitle">Попробуй инди-игры от независимых разработчиков</p>
+
+    {% if games.items %}
+        <div class="grid">
+            {% for game in games.items %}
+                <div class="game-card">
+                    <div class="placeholder-img">🎮 {{ game.title[:2] }}</div>
+                    <h3>{{ game.title }}</h3>
+                    <span class="genre">{{ game.genre or 'Без жанра' }}</span>
+                    <div class="description">
+                        {{ game.description[:120] }}{% if game.description|length > 120 %}...{% endif %}
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <h2>😕 Пока нет игр</h2>
-                <p>Стань первым разработчиком, который загрузит демо-версию!</p>
-                <p style="margin-top: 12px; font-size: 14px; color: #58a6ff;">(Скоро появится форма загрузки)</p>
-            </div>
-        {% endif %}
+                    <div class="meta">
+                        <span class="downloads">⬇️ {{ game.downloads_count or 0 }}</span>
+                        <span>👤 {{ game.developer.username if game.developer else 'Неизвестен' }}</span>
+                        <a href="{{ url_for('download_game', game_id=game.id) }}" class="btn-demo">Скачать демо</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 
-        <footer>
-            Indie-Демо — площадка для инди-разработчиков © 2026
-        </footer>
-    </div>
-</body>
-</html>
+        {# Пагинация #}
+        {% if games.pages > 1 %}
+        <div class="pagination">
+            {% if games.has_prev %}
+                <a href="{{ url_for('index', page=games.prev_num) }}" class="page-link">← Назад</a>
+            {% endif %}
+            <span class="page-info">Страница {{ games.page }} из {{ games.pages }}</span>
+            {% if games.has_next %}
+                <a href="{{ url_for('index', page=games.next_num) }}" class="page-link">Вперёд →</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="empty-state">
+            <h2>😕 Пока нет игр</h2>
+            <p>Стань первым разработчиком, который загрузит демо-версию!</p>
+        </div>
+    {% endif %}
+{% endblock %}

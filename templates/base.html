@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Indie-Демо{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        {# Шапка — теперь она здесь один раз #}
+        <header>
+            <div class="logo">Indie<span>Демо</span></div>
+            <div class="header-links">
+                {% if session.user_id %}
+                    <a href="{{ url_for('chat') }}">💬 Чат</a>
+                    <a href="{{ url_for('upload_game') }}" class="upload-link">➕ Загрузить игру</a>
+                    {% if session.user_id == 1 %}
+                        <a href="{{ url_for('admin_panel') }}" class="admin-link">⚙️ Админка</a>
+                    {% endif %}
+                    <span class="username">Привет, {{ session.username }}!</span>
+                    <a href="{{ url_for('logout') }}" class="logout">Выйти</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="login">Вход</a>
+                    <a href="{{ url_for('register') }}" class="register">Регистрация</a>
+                {% endif %}
+            </div>
+        </header>
+
+        {# Флэш-сообщения #}
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {# Основной контент — будет подставляться из дочерних шаблонов #}
+        {% block content %}{% endblock %}
+
+        {# Подвал — тоже один раз #}
+        <footer>
+            Indie-Демо — площадка для инди-разработчиков © 2026
+        </footer>
+    </div>
+</body>
+</html>
