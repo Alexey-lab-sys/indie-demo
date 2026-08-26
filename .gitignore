@@ -1,7 +1,11 @@
 flask_venv/
+venv/
+env/
+*.db
 instance/
 __pycache__/
 *.pyc
-.env
-*.db
+.vscode/
+.idea/
+.DS_Store
 static/uploads/
